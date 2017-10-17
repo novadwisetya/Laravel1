@@ -15,3 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::resource('/articles', 'ArticlesController');
+Route::resource('comments', 'CommentsController');
+Route::post('/uploadfile','ArticlesController@showUploadFile');
+
+

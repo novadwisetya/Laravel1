@@ -81,7 +81,7 @@
     @endif
 
     <div class="content">
-        <div class="title m-b-md animated rubberBand">
+        <div class="title m-b-md animated bounce" style="color:green;">
             GeekFarm
         </div>
 
