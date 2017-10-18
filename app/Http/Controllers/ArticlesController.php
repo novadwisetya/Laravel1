@@ -40,20 +40,22 @@ class ArticlesController extends Controller
             'title' => 'required|min:5',
             'content' => 'required|min:5'
         ]);
+
         Article::create($request->all());
         $file = $request->file('image');
-           //Move Uploaded File
         $destinationPath = 'uploads';
         $generateName = md5(uniqid(mt_rand(), true).microtime(true));
         $fileName = $destinationPath . '_' .  $generateName . '.' . $file->getClientOriginalExtension();
-        $file->move($destinationPath,$fileName);
+        $file->move($destinationPath,$fileName); 
 
         $image = new Images;
         $image -> fileImage = $fileName;
-        $image -> title = $request-> title;
+        $image -> title = $request->title;
         $image -> save();
+        
         Session::flash("notice", "Article success created");
         return Redirect::to('articles/'. $request->article_id); 
+        
         }
 
     /**
