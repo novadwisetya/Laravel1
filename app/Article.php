@@ -17,7 +17,7 @@ class Article extends Model
     public function comments() {
         return $this->hasMany('App\Comment', 'article_id');
     }
-    public function UploadImages() {
-        return $this->hasMany('App\UploadImages', 'title');
+    public function article_images() {
+        return $this->hasMany('App\article_images', 'article_id');
     }
 }

@@ -35,8 +35,8 @@
                     <br /><br />
                     Choose Images:
                     <br />
-                    {!! Form::open(array('url' => '/uploadfile','files'=>'true')); !!}               
-                    {!! Form::file('image'); !!} 
+                    <input type="file" name="image[]" multiple />            
+
                     <br /><br>
             </div>
         {!! Form::submit('Save', array('class' => 'btn btn-raised btn-primary')) !!}       

@@ -4,19 +4,44 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
-use App\Images;
+use App\article_images;
 use Session;
 use Validator;
 use Redirect;
 
+
 class ArticlesController extends Controller
 {
-    public function index()
+    public function __construct() 
     {
-        $articles = Article::all();   
-        return view('articles.index')->with('articles', $articles);
+        $this->middleware('sentinel');
+        $this->middleware('sentinel.role');
     }
 
+    public function index(Request $request)
+    {
+        
+        if($request->ajax()) 
+        {
+            $articles = Article::where('title', 'like', '%'.$request->keywords.'%')->orWhere('content', 'like', '%'.$request->keywords.'%');
+            if($request->direction) 
+            {
+            $articles = $articles->orderBy('id', $request->direction);
+            }
+            $articles = $articles->paginate(3);
+            
+            $request->direction == 'asc' ? $direction = 'desc' : $direction = 'asc';
+            $request->keywords == '' ? $keywords = '' : $keywords = $request->keywords;
+            
+            $view = (String) view('articles.list')->with('articles', $articles)->render();
+
+            return response()->json(['view' => $view, 'direction' => $direction, 'keywords' => $keywords, 'status' => 'success']);
+        } else 
+            {
+            $articles = Article::all();
+            return view('articles.index')->with('articles', $articles);
+            }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -41,17 +66,21 @@ class ArticlesController extends Controller
             'content' => 'required|min:5'
         ]);
 
-        Article::create($request->all());
-        $file = $request->file('image');
         $destinationPath = 'uploads';
         $generateName = md5(uniqid(mt_rand(), true).microtime(true));
-        $fileName = $destinationPath . '_' .  $generateName . '.' . $file->getClientOriginalExtension();
-        $file->move($destinationPath,$fileName); 
+        $articles  = Article::create($request->all());
+        if(isset($request->image)){
+            foreach($request->image as $file){
+            //$file = $request->file('image'); 
+            $fileName = $destinationPath . '_' .  $generateName . '.' . $file->getClientOriginalExtension();
+            $file->move($destinationPath,$fileName); 
 
-        $image = new Images;
-        $image -> fileImage = $fileName;
-        $image -> title = $request->title;
-        $image -> save();
+            $image = new article_images;
+            $image ->  article_id = $articles->id;
+            $image -> filename = $fileName;
+            $image -> save();
+            }
+        }
         
         Session::flash("notice", "Article success created");
         return Redirect::to('articles/'. $request->article_id); 
@@ -68,11 +97,13 @@ class ArticlesController extends Controller
     {
         $article = Article::find($id);
 
-        $comments = Article::find($id)
-        ->comments->sortBy('Comment.created_at');
+        $comments = Article::find($id)->comments->sortBy('Comment.created_at');
+        $images = Article::find($id)->filename;
+
         return view('articles.show')
         ->with('article', $article)
-        ->with('comments', $comments);
+        ->with('comments', $comments)
+        ->with('article_images', $images);
 
 
     }

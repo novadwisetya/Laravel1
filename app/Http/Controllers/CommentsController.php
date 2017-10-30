@@ -12,6 +12,7 @@ class CommentsController extends Controller
 {
     public function store(Request $request)
     {
+        if($request->ajax()){
         $validate = Validator::make($request->all(), Comment::valid());
         if($validate->fails()) {
             return Redirect::to('articles/'. $request->article_id)
@@ -22,6 +23,9 @@ class CommentsController extends Controller
             Session::flash('notice', 'Success add comment');
             return Redirect::to('articles/'. $request->article_id);
         }
+
+
+    }
     }
     
 }
