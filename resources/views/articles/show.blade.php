@@ -9,6 +9,8 @@
             {!! link_to(route('articles.index'), "Back", ['class' => 'btn btn-raised btn-info']) !!}
 
             {!! link_to(route('articles.edit', $article->id), 'Edit', ['class' => 'btn btn-raised btn-warning']) !!}
+            {!! link_to('exportExcel/xlsx/' . $article->id, 'Export', ['class' => 'btn btn-raised btn-warning']) !!}
+            <!-- {{ URL::to('exportExcel/xlsx') }} -->
 
             {!! Form::submit('Delete', array('class' => 'btn btn-raised btn-danger', "onclick" => "return confirm('are you sure?')")) !!}
             {!! Form::close() !!}

@@ -12,16 +12,56 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css" >
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css"> 
+    
+
+    <!-- <link rel="stylesheet" href="http://demo.itsolutionstuff.com/plugin/bootstrap-3.min.css"> -->
+    <!-- <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet"> -->
+    <!-- <script src="http://demo.itsolutionstuff.com/plugin/jquery.js"></script> -->
+    <!-- <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script> -->
+    <style>
+    html{
+        background-color:white;
+    }
+    body{
+        background-color:white;
+    }
+    .container-fluid {
+      padding-top: 70px;
+      padding-bottom: 70px;
+    }
+    .navbar {
+        /* padding-top: 10px;
+        padding-bottom: 10px; */
+        background-color:#f4511e;
+        border: 0;
+        border-radius: 0;
+        margin-bottom: 0;
+        font-size: 12px;
+        letter-spacing: 3px;
+    }
+    .nav{
+        color:white;
+    }
+    /* .navbar-nav  li a:hover {
+        color: #f4f442 !important;
+    } */
+    .navbar-nav li a:hover, .navbar-nav li.active a {
+      color: #f4511e !important;
+      background-color: #fff !important;
+  }
+  </style>
 
 </head>
 <body style="padding-top:60px;">
 <!--bagian navigation-->
 @include('shared.head_nav')
+
 <!-- Bagian Content -->
 <div class="container clearfix">
     <div class="row row-offcanvas row-offcanvas-left ">  
     <!--Bagian Kanan-->
-
     <div id="main-content" class="col-xs-12 col-sm-12 main pull-right">
 
         <div class="panel-body">
@@ -36,13 +76,11 @@
             </div>
         @endif
         <div class="row">
-            <div class="form-group label-floating">
-                <div class="clear"></div>
-
-            </div>
-        
-            <br />
-            <div class="form-group label-floating">
+            <!-- <div class="form-group label-floating">
+                <div class="clear">
+                </div>
+            </div> -->
+                    <!-- <div class="form-group label-floating">
                 <label class="col-lg-2" for="keywords">Search Article</label>
                 <div class="col-lg-8">
                 <input type="text" class="form-control" id="keywords" placeholder="Type search keywords">
@@ -50,11 +88,10 @@
 
             <div class="col-lg-2">
             <button id="search" class="btn btn-info btn-flat" type="button"> Search </button>
-        </div>
+        </div> -->
 
-        <div class="clear"></div>
-            <p>Sort articles by : <a id="id">ID &nbsp;<i id="ic-direction"></i></a></p>
-            <br />
+            <div class="clear"></div>
+            <!-- <p>Sort articles by : <a id="id">ID &nbsp;<i id="ic-direction"></i></a></p> -->
             <div id="data-content">
                 @yield("content")
             </div>
@@ -66,7 +103,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script> -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<!-- Handling Datatable -->
+<script type="text/javascript">
+ 
+    $(document).ready(function() {
+        oTable = $('#users').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{ route('datatable.getposts') }}",
+            "columns": [
+                {data: 'id', name: 'id'},
+                {data: 'title', name: 'title'},
+                {data: 'content', name: 'content'},
+                {data: 'created_at', name: 'created_at'},
+                {data: 'updated_at', name: 'updated_at'}
+            ]
+        });
+    });
+</script>
 
 
 <!-- This for handle comment -->
@@ -130,6 +187,25 @@
             }
         });
     });
+</script>
+
+
+<!-- for handling datatables -->
+
+<script type="text/javascript">
+$(document).ready(function() {
+    oTable = $('#users').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {{ route('datatable.getposts') }},
+        "columns": [
+            {data: 'id', name: 'id'},
+            {data: 'title', name: 'title'},
+            {data: 'category', name: 'category'},
+            {data: 'tag', name: 'tag'}
+        ]
+    });
+});
 </script>
 
 

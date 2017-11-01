@@ -30,6 +30,12 @@ Route::post('forgot-password', 'ReminderController@store')->name('reminders.stor
 //this routes for handle changes password
 Route::get('reset-password/{id}/{token}', 'ReminderController@edit')->name('reminders.edit');
 Route::post('reset-password/{id}/{token}', 'ReminderController@update')->name('reminders.update');
+Route::get('exportExcel/{type}/{id}', 'MaatwebsiteController@exportExcel');
+Route::post('importExcel', 'MaatwebsiteController@importExcel');
 
+//use package laravel datatables
+
+Route::get('datatable', ['uses'=>'PostController@datatable']);
+Route::get('datatable /getposts', ['as'=>'datatable.getposts','uses'=>'PostController@getPosts']);
 
 

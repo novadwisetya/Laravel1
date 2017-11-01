@@ -9,17 +9,63 @@
             <span class="icon-bar"/>
             <span class="icon-bar"/>
             </button>
-            <a href="/" class = "navbar-brand">GeekFarm</a>
+            <a href="/" class ="navbar-brand" style="color:white;">GeekFarm</a>
+
+            <div class="form-group navbar-form navbar-left">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="keywords" placeholder="Search">
+                    <span class="input-group-btn">
+                        <button id="search" class="btn btn-warning" type="button">Search!</button>
+                    </span>
+                </div>
+            </div>
+            <!-- <div class="form-group navbar-form navbar-left">
+            <button id="search" type="button" class="btn btn-default">Search</button>
+            </div> -->
+            
         </div>
-        <div class="collapse navbar-collapse">     
+        <div class="collapse navbar-collapse">    
+            
+            
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Home</a></li>
-                <li><a href="/articles">Article</a></li>
+                <li><a href="/" style="color:white;">Home</a></li>
+                <li><a href="/articles" style="color:white;">Article</a></li>
 
                 
                 @if (Sentinel::check())
-                <li>{!! link_to(route('logout'), 'Logout') !!}</li>
-                <li><a>Wellcome {!! Sentinel::getUser()->email !!}</a></li>
+                <li style="color:white;">{!! link_to(route('logout'), 'Logout', array('style' => 'color:white;')) !!}</li>
+                <li><a style="color:white;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wellcome {!! Sentinel::getUser()->email !!}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>{!! link_to('articles/create', 'New Article') !!}</li>
+                        <li><a data-toggle="modal" data-target=".bs-example-modal-sm">Import</a>
+                            <p class="text-danger">{!! $errors->first('import_file') !!}	</p>    
+                            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                            <div class="modal-dialog modal-sm" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close btn-warning" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Import Artcile</h4>
+                                </div>
+                                {!! Form::open(['url' => 'importExcel', 'class' => 'form-horizontal', 'role' => 'form', 'enctype' => 'multipart/form-data']) !!}
+                                <div class="modal-body">
+                                    <p>Choose file to import</p>
+                                    <input type="file" name="import_file"/>	
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-warning">Import File</button>
+                                </div>
+                                </form>
+
+                            </div>
+                            </div>    
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Setting</a></li>
+                        <li>{!! link_to(route('logout'), 'Logout', array('style' => 'color:black;')) !!}</li>
+                    </ul>
+                
+                </li>
                 @else
                 <li>{!! link_to(route('signup'), 'Signup') !!}</li>
                 <li>{!! link_to(route('login'), 'Login') !!}</li>
