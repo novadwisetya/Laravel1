@@ -18,7 +18,8 @@ class PostController extends Controller
     {
         $users = Article::all();
 
-        return Datatables::of($users)->editColumn('content', function($users) {
+        return Datatables::of($users)->addColumn('action', 'data.action')
+        ->editColumn('content', function($users) {
                     return str_limit($users->content, 70);
                 })->make(true);
 

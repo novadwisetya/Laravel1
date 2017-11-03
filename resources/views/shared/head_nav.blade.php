@@ -29,37 +29,13 @@
             
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/" style="color:white;">Home</a></li>
-                <li><a href="/articles" style="color:white;">Article</a></li>
-
-                
+                <li><a href="/articles" style="color:white;">Article</a></li>                
                 @if (Sentinel::check())
                 <li style="color:white;">{!! link_to(route('logout'), 'Logout', array('style' => 'color:white;')) !!}</li>
-                <li><a style="color:white;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wellcome {!! Sentinel::getUser()->email !!}<span class="caret"></span></a>
+                <li><a style="color:white;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome {!! Sentinel::getUser()->email !!}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>{!! link_to('articles/create', 'New Article') !!}</li>
-                        <li><a data-toggle="modal" data-target=".bs-example-modal-sm">Import</a>
-                            <p class="text-danger">{!! $errors->first('import_file') !!}	</p>    
-                            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-                            <div class="modal-dialog modal-sm" role="document">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close btn-warning" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">Import Artcile</h4>
-                                </div>
-                                {!! Form::open(['url' => 'importExcel', 'class' => 'form-horizontal', 'role' => 'form', 'enctype' => 'multipart/form-data']) !!}
-                                <div class="modal-body">
-                                    <p>Choose file to import</p>
-                                    <input type="file" name="import_file"/>	
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-warning">Import File</button>
-                                </div>
-                                </form>
-
-                            </div>
-                            </div>    
-                        </li>
+                        <li><a data-toggle="modal" data-target=".bs-example-modal-sm">Import</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">Setting</a></li>
                         <li>{!! link_to(route('logout'), 'Logout', array('style' => 'color:black;')) !!}</li>
@@ -71,6 +47,7 @@
                 <li>{!! link_to(route('login'), 'Login') !!}</li>
                 @endif
             </ul>
+           
         </div>
     </div>
 </div>

@@ -14,12 +14,7 @@
     <link rel="stylesheet" href="/css/style.css" >
     <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/> -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css"> 
-    
 
-    <!-- <link rel="stylesheet" href="http://demo.itsolutionstuff.com/plugin/bootstrap-3.min.css"> -->
-    <!-- <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet"> -->
-    <!-- <script src="http://demo.itsolutionstuff.com/plugin/jquery.js"></script> -->
-    <!-- <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script> -->
     <style>
     html{
         background-color:white;
@@ -63,33 +58,22 @@
     <div class="row row-offcanvas row-offcanvas-left ">  
     <!--Bagian Kanan-->
     <div id="main-content" class="col-xs-12 col-sm-12 main pull-right">
-
+        
         <div class="panel-body">
         @if (Session::has('error'))
-            <div class="session-flash alert-danger">
+            <div class="session-flash alert alert-danger">
                 {{Session::get('error')}}
             </div>
         @endif
         @if (Session::has('notice'))
-        <div class="session-flash alert-info">
+        <div class="session-flash alert alert-info">
             {{Session::get('notice')}}
-            </div>
+        </div>
         @endif
+       <div class="session-flash alert-warning">
+        {{ $errors->first('import_file') }}
+        </div>
         <div class="row">
-            <!-- <div class="form-group label-floating">
-                <div class="clear">
-                </div>
-            </div> -->
-                    <!-- <div class="form-group label-floating">
-                <label class="col-lg-2" for="keywords">Search Article</label>
-                <div class="col-lg-8">
-                <input type="text" class="form-control" id="keywords" placeholder="Type search keywords">
-            </div>
-
-            <div class="col-lg-2">
-            <button id="search" class="btn btn-info btn-flat" type="button"> Search </button>
-        </div> -->
-
             <div class="clear"></div>
             <!-- <p>Sort articles by : <a id="id">ID &nbsp;<i id="ic-direction"></i></a></p> -->
             <div id="data-content">
@@ -99,7 +83,6 @@
         </div>
     </div>
 </div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -119,7 +102,8 @@
                 {data: 'title', name: 'title'},
                 {data: 'content', name: 'content'},
                 {data: 'created_at', name: 'created_at'},
-                {data: 'updated_at', name: 'updated_at'}
+                {data: 'updated_at', name: 'updated_at'},
+                {data: 'action', name: 'action'}
             ]
         });
     });
@@ -208,6 +192,41 @@ $(document).ready(function() {
 });
 </script>
 
+<!-- handle submit -->
+<script>
+$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $('#delete').on('click', function(){
+        alert('berhasil');
+        $.ajax({
+            url : 'articles',
+            type : "POST",
+            dataType : 'json',
+            data : {
+                'article_id' : $("#article_id").val(),
+                'content' : $("#content").val(),
+                'user' : $("#user").val()
+            },
+
+            success : function(data) {
+            },
+
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+            },
+            
+            complete : function() {
+            alreadyloading = false;
+            }
+        });
+    });
+    
+</script>
+
 
 <!-- this js for handle ajax sorting -->
 <script>
@@ -252,5 +271,25 @@ $(document).ready(function() {
         });
     }
 </script>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close btn-warning" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Import Artcile</h4>
+            </div>
+        {!! Form::open(['url' => 'importExcel', 'class' => 'form-horizontal', 'role' => 'form', 'enctype' => 'multipart/form-data']) !!}
+            <div class="modal-body">
+                <p>Choose file to import</p>
+                <input type="file" name="import_file"/>	                       
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning">Import File</button>
+            </div>
+        </form>
+
+        </div>
+    </div> 
+</div>  
     </body>
 </html>

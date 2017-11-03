@@ -36,7 +36,6 @@ class MaatwebsiteController extends Controller
 			if(!empty($data) && $data->count()){
 				foreach ($data as $key => $value) {
                     Article::create(['title' => $value->title, 'content' => $value->content]);
-                    // $insert[] = ['title' => $value->title, 'content' => $value->content, 'created_at' =>  \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()];
 				}
 			}
 		}

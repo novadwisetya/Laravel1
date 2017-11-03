@@ -14,7 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('/articles', 'ArticlesController');
+Route::resource('articles', 'ArticlesController');
+Route::resource('delete', 'ArticlesController@destroy');
 Route::resource('comments', 'CommentsController');
 Route::post('/postcomment', 'CommentsController@store');
 Route::post('/uploadfile','ArticlesController@showUploadFile');
@@ -23,7 +24,6 @@ Route::post('signup', 'UsersController@signup_store')->name('signup.store');
 Route::get('login', 'SessionsController@login')->name('login');
 Route::post('login', 'SessionsController@login_store')->name('login.store');
 Route::get('logout', 'SessionsController@logout')->name('logout');
-
 //this routes for check if email user is exist in database
 Route::get('forgot-password', 'ReminderController@create')->name('reminders.create');
 Route::post('forgot-password', 'ReminderController@store')->name('reminders.store');
@@ -32,10 +32,8 @@ Route::get('reset-password/{id}/{token}', 'ReminderController@edit')->name('remi
 Route::post('reset-password/{id}/{token}', 'ReminderController@update')->name('reminders.update');
 Route::get('exportExcel/{type}/{id}', 'MaatwebsiteController@exportExcel');
 Route::post('importExcel', 'MaatwebsiteController@importExcel');
-
 //use package laravel datatables
-
 Route::get('datatable', ['uses'=>'PostController@datatable']);
-Route::get('datatable /getposts', ['as'=>'datatable.getposts','uses'=>'PostController@getPosts']);
+Route::get('datatable/getposts', ['as'=>'datatable.getposts','uses'=>'PostController@getPosts']);
 
 
